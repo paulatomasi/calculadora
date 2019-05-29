@@ -31,27 +31,17 @@ class ViewController: UIViewController {
                 hasResponse = false
                 operation = buttonTitle
             case "=":
-                if secondNumber != "0" {
-                    calculate()
-                }
+                calculate()
             default:
                 if hasResponse {
                     clear()
                     firstNumber = buttonTitle
                     displayLabel.text = firstNumber
                 } else if operation.isEmpty {
-                    if firstNumber == "0" {
-                        firstNumber = buttonTitle
-                    } else {
-                        firstNumber = displayText + buttonTitle
-                    }
+                    firstNumber = firstNumber == "0" ? buttonTitle : displayText + buttonTitle
                     displayLabel.text = firstNumber
                 } else {
-                    if secondNumber == "0" {
-                        secondNumber = buttonTitle
-                    } else {
-                        secondNumber = displayText + buttonTitle
-                    }
+                    secondNumber = secondNumber == "0" ? buttonTitle : displayText + buttonTitle
                     displayLabel.text = secondNumber
                 }
             }
@@ -69,7 +59,11 @@ class ViewController: UIViewController {
         case "x²":
             response = calculadora.pow(number: number)
         case "÷":
-            response = calculadora.div(firstNumber: number, secondNumber: number2)
+            if number2 == 0.0 {
+                response = Float.nan
+            } else {
+                response = calculadora.div(firstNumber: number, secondNumber: number2)
+            }
         case "x":
             response = calculadora.times(firstNumber: number, secondNumber: number2)
         case "-":
@@ -77,7 +71,7 @@ class ViewController: UIViewController {
         case "+":
             response = calculadora.plus(firstNumber: number, secondNumber: number2)
         default:
-            break
+            response = number
         }
         
         clear()
@@ -94,5 +88,4 @@ class ViewController: UIViewController {
         hasResponse = false
     }
 }
-
 
